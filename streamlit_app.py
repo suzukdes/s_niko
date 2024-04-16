@@ -1,31 +1,27 @@
-# Streamlitライブラリをインポート
 import streamlit as st
+import random
 
-# ページ設定（タブに表示されるタイトル、表示幅）
-st.set_page_config(page_title="タイトル", layout="wide")
-
-# タイトルを設定
-st.title('Streamlitのサンプルアプリ')
-
-# テキスト入力ボックスを作成し、ユーザーからの入力を受け取る
-user_input = st.text_input('あなたの名前を入力してください')
-
-# ボタンを作成し、クリックされたらメッセージを表示
-if st.button('挨拶する'):
-    if user_input:  # 名前が入力されているかチェック
-        st.success(f'🌟 こんにちは、{user_input}さん! 🌟')  # メッセージをハイライト
+def determine_winner(user_choice, computer_choice):
+    if user_choice == computer_choice:
+        return "引き分けです！"
+    elif (user_choice == "rock" and computer_choice == "scissors") or \
+         (user_choice == "paper" and computer_choice == "rock") or \
+         (user_choice == "scissors" and computer_choice == "paper"):
+        return "あなたの勝ちです！"
     else:
-        st.error('名前を入力してください。')  # エラーメッセージを表示
+        return "コンピューターの勝ちです！"
 
-# スライダーを作成し、値を選択
-number = st.slider('好きな数字（10進数）を選んでください', 0, 100)
+def main():
+    st.title("じゃんけんゲーム")
+    
+    user_choice = st.radio("あなたの選択:", ("rock", "paper", "scissors"))
 
-# 補足メッセージ
-st.caption("十字キー（左右）でも調整できます。")
+    computer_choice = random.choice(["rock", "paper", "scissors"])
 
-# 選択した数字を表示
-st.write(f'あなたが選んだ数字は「{number}」です。')
+    if st.button("結果を見る"):
+        st.write("あなたの選択:", user_choice)
+        st.write("コンピューターの選択:", computer_choice)
+        st.write(determine_winner(user_choice, computer_choice))
 
-# 選択した数値を2進数に変換
-binary_representation = bin(number)[2:]  # 'bin'関数で2進数に変換し、先頭の'0b'を取り除く
-st.info(f'🔢 10進数の「{number}」を2進数で表現すると「{binary_representation}」になります。 🔢')  # 2進数の表示をハイライト
+if __name__ == "__main__":
+    main()
